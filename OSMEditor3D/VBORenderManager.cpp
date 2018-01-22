@@ -15,7 +15,7 @@ void VBORenderManager::init(const QVector2D& size) {
 	maxPos = QVector3D(size.x() / 2.0f, size.y() / 2.0f, 0);
 
 	// init program shader
-	program = Shader::initShader("data/shaders/lc_vertex_sk.glsl", "data/shaders/lc_fragment_sk.glsl");
+	program = Shader::initShader("shaders/lc_vertex_sk.glsl", "shaders/lc_fragment_sk.glsl");
 	glUseProgram(program);
 
 	vboTerrain.init(this, size);

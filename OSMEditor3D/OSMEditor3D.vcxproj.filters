@@ -161,6 +161,15 @@
     <ClCompile Include="nvModel\nvModelQuery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="History.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RoadGraphEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OSMRoadsExporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MainWindow.h">
@@ -301,6 +310,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="nvModel\nvVector.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="History.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RoadGraphEditor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OSMRoadsExporter.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

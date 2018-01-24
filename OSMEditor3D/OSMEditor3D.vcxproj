@@ -165,11 +165,13 @@
     <ClCompile Include="global.cpp" />
     <ClCompile Include="GLWidget3D.cpp" />
     <ClCompile Include="GLWidget3D_Shadows.cpp" />
+    <ClCompile Include="History.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="nvModel\nvModel.cpp" />
     <ClCompile Include="nvModel\nvModelObj.cpp" />
     <ClCompile Include="nvModel\nvModelQuery.cpp" />
+    <ClCompile Include="OSMRoadsExporter.cpp" />
     <ClCompile Include="OSMRoadsParser.cpp" />
     <ClCompile Include="Parcel.cpp" />
     <ClCompile Include="Pm.cpp" />
@@ -184,6 +186,7 @@
     <ClCompile Include="Polyline3D.cpp" />
     <ClCompile Include="RoadEdge.cpp" />
     <ClCompile Include="RoadGraph.cpp" />
+    <ClCompile Include="RoadGraphEditor.cpp" />
     <ClCompile Include="RoadMeshGenerator.cpp" />
     <ClCompile Include="RoadVertex.cpp" />
     <ClCompile Include="UrbanGeometry.cpp" />
@@ -250,11 +253,13 @@
     <ClInclude Include="global.h" />
     <ClInclude Include="GLWidget3D.h" />
     <ClInclude Include="GLWidget3D_Shadows.h" />
+    <ClInclude Include="History.h" />
     <ClInclude Include="nvModel\nvMath.h" />
     <ClInclude Include="nvModel\nvMatrix.h" />
     <ClInclude Include="nvModel\nvModel.h" />
     <ClInclude Include="nvModel\nvQuaternion.h" />
     <ClInclude Include="nvModel\nvVector.h" />
+    <ClInclude Include="OSMRoadsExporter.h" />
     <ClInclude Include="OSMRoadsParser.h" />
     <ClInclude Include="Parcel.h" />
     <ClInclude Include="Pm.h" />
@@ -269,6 +274,7 @@
     <ClInclude Include="Polyline3D.h" />
     <ClInclude Include="RoadEdge.h" />
     <ClInclude Include="RoadGraph.h" />
+    <ClInclude Include="RoadGraphEditor.h" />
     <ClInclude Include="RoadMeshGenerator.h" />
     <ClInclude Include="RoadVertex.h" />
     <ClInclude Include="UrbanGeometry.h" />

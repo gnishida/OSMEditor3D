@@ -44,8 +44,6 @@ void UrbanGeometry::generateVegetation() {
 void UrbanGeometry::generateAll(bool updateGeometry) {
 	clear();
 
-	// 2016/11/10
-	// We decided to remove randomness.
 	srand(0);
 
 	// warm up the random numbers
@@ -76,58 +74,13 @@ void UrbanGeometry::update(VBORenderManager& vboRenderManager) {
 	vboRenderManager.removeStaticGeometry("tree");
 	vboRenderManager.removeStaticGeometry("streetLamp");
 
-	if (G::getBool("shader2D")) {
-		RoadMeshGenerator::generate2DRoadMesh(vboRenderManager, roads);
-		BlockMeshGenerator::generate2DParcelMesh(vboRenderManager, blocks);
-	}
-	else {
+	if (!G::getBool("shader2D")) {
 		RoadMeshGenerator::generateRoadMesh(vboRenderManager, roads);
 		BlockMeshGenerator::generateBlockMesh(vboRenderManager, blocks);
 		BlockMeshGenerator::generateParcelMesh(vboRenderManager, blocks);
 		Pm::generateBuildings(mainWin->glWidget->vboRenderManager, blocks);
 		PmVegetation::generateVegetation(mainWin->glWidget->vboRenderManager, blocks.blocks);
 	}
-}
-
-void UrbanGeometry::loadRoads(const QString& filename) {
-	roads.clear();
-
-	OSMRoadsParser parser(&roads);
-	QXmlSimpleReader reader;
-	reader.setContentHandler(&parser);
-	QFile file(filename);
-	QXmlInputSource source(&file);
-	reader.parse(source);
-
-	roads.planarify();
-	roads.reduce();
-	roads = roads.clone();
-
-	update(mainWin->glWidget->vboRenderManager);
-}
-
-void UrbanGeometry::saveRoads(const QString &filename) {
-	/*
-	glm::vec2 offset = (maxBound + minBound) * 0.5f;
-
-	gs::Shape shape(wkbLineString);
-	RoadEdgeIter ei, eend;
-	for (boost::tie(ei, eend) = boost::edges(roads.graph); ei != eend; ++ei) {
-		if (!roads.graph[*ei]->valid) continue;
-
-		gs::ShapeObject shapeObject;
-		shapeObject.parts.resize(1);
-		for (int k = 0; k < roads.graph[*ei]->polyline.size(); ++k) {
-			const QVector2D& pt = roads.graph[*ei]->polyline[k];
-			float z = mainWin->glWidget->vboRenderManager.getTerrainHeight(pt.x(), pt.y());
-			shapeObject.parts[0].points.push_back(glm::vec3(pt.x() + offset.x, pt.y() + offset.y, z));
-		}
-
-		shape.shapeObjects.push_back(shapeObject);
-	}
-
-	shape.save(filename);
-	*/
 }
 
 void UrbanGeometry::clear() {

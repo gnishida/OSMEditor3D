@@ -57,12 +57,15 @@ public:
     QAction *actionSeaLevel;
     QAction *actionShowWater;
     QAction *actionLoadOSMRoads;
+    QAction *actionUndo;
+    QAction *actionRedo;
+    QAction *actionDeleteEdge;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
-    QMenu *menuPM;
     QMenu *menuView;
-    QToolBar *fileToolBar;
+    QMenu *menuEdit;
+    QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -142,6 +145,21 @@ public:
         actionShowWater->setCheckable(true);
         actionLoadOSMRoads = new QAction(MainWindow);
         actionLoadOSMRoads->setObjectName(QStringLiteral("actionLoadOSMRoads"));
+        actionUndo = new QAction(MainWindow);
+        actionUndo->setObjectName(QStringLiteral("actionUndo"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral("Resources/undo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionUndo->setIcon(icon2);
+        actionRedo = new QAction(MainWindow);
+        actionRedo->setObjectName(QStringLiteral("actionRedo"));
+        QIcon icon3;
+        icon3.addFile(QStringLiteral("Resources/redo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionRedo->setIcon(icon3);
+        actionDeleteEdge = new QAction(MainWindow);
+        actionDeleteEdge->setObjectName(QStringLiteral("actionDeleteEdge"));
+        QIcon icon4;
+        icon4.addFile(QStringLiteral("Resources/delete.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionDeleteEdge->setIcon(icon4);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
@@ -150,20 +168,20 @@ public:
         menuBar->setGeometry(QRect(0, 0, 1006, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
-        menuPM = new QMenu(menuBar);
-        menuPM->setObjectName(QStringLiteral("menuPM"));
         menuView = new QMenu(menuBar);
         menuView->setObjectName(QStringLiteral("menuView"));
+        menuEdit = new QMenu(menuBar);
+        menuEdit->setObjectName(QStringLiteral("menuEdit"));
         MainWindow->setMenuBar(menuBar);
-        fileToolBar = new QToolBar(MainWindow);
-        fileToolBar->setObjectName(QStringLiteral("fileToolBar"));
-        MainWindow->addToolBar(Qt::TopToolBarArea, fileToolBar);
+        mainToolBar = new QToolBar(MainWindow);
+        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
+        MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
-        menuBar->addAction(menuPM->menuAction());
+        menuBar->addAction(menuEdit->menuAction());
         menuBar->addAction(menuView->menuAction());
         menuFile->addAction(actionLoadRoads);
         menuFile->addAction(actionSaveRoads);
@@ -178,16 +196,12 @@ public:
         menuFile->addAction(actionResetCamera);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
-        menuPM->addAction(actionGenerateBlocks);
-        menuPM->addAction(actionGenerateParcels);
-        menuPM->addAction(actionGenerateBuildings);
-        menuPM->addAction(actionGenerateVegetation);
-        menuPM->addAction(actionGenerateAll);
         menuView->addAction(actionView2D);
         menuView->addAction(actionView3D);
-        menuView->addSeparator();
-        menuView->addAction(actionShowWater);
-        menuView->addAction(actionSeaLevel);
+        menuEdit->addAction(actionUndo);
+        menuEdit->addAction(actionRedo);
+        menuEdit->addSeparator();
+        menuEdit->addAction(actionDeleteEdge);
 
         retranslateUi(MainWindow);
 
@@ -239,9 +253,15 @@ public:
         actionSeaLevel->setText(QApplication::translate("MainWindow", "Sea Level", 0));
         actionShowWater->setText(QApplication::translate("MainWindow", "Show Water", 0));
         actionLoadOSMRoads->setText(QApplication::translate("MainWindow", "Load OSM Roads", 0));
+        actionUndo->setText(QApplication::translate("MainWindow", "Undo", 0));
+        actionUndo->setShortcut(QApplication::translate("MainWindow", "Ctrl+Z", 0));
+        actionRedo->setText(QApplication::translate("MainWindow", "Redo", 0));
+        actionRedo->setShortcut(QApplication::translate("MainWindow", "Ctrl+Y", 0));
+        actionDeleteEdge->setText(QApplication::translate("MainWindow", "Delete Edge", 0));
+        actionDeleteEdge->setShortcut(QApplication::translate("MainWindow", "Del", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
-        menuPM->setTitle(QApplication::translate("MainWindow", "PM", 0));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0));
+        menuEdit->setTitle(QApplication::translate("MainWindow", "Edit", 0));
     } // retranslateUi
 
 };

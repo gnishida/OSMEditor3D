@@ -25,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	connect(ui.actionResetCamera, SIGNAL(triggered()), this, SLOT(onResetCamera()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+	connect(ui.actionUndo, SIGNAL(triggered()), this, SLOT(onUndo()));
+	connect(ui.actionRedo, SIGNAL(triggered()), this, SLOT(onRedo()));
+	connect(ui.actionDeleteEdge, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+
 	connect(ui.actionGenerateBlocks, SIGNAL(triggered()), this, SLOT(onGenerateBlocks()));
 	connect(ui.actionGenerateParcels, SIGNAL(triggered()), this, SLOT(onGenerateParcels()));
 	connect(ui.actionGenerateBuildings, SIGNAL(triggered()), this, SLOT(onGenerateBuildings()));
@@ -40,7 +44,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	glWidget = new GLWidget3D(this);
 	setCentralWidget(glWidget);
 
-	//urbanGeometry = new UrbanGeometry(this);
+	// create tool bar for file menu
+	ui.mainToolBar->addAction(ui.actionLoadRoads);
+	ui.mainToolBar->addAction(ui.actionSaveRoads);
+	ui.mainToolBar->addSeparator();
+
+	// create tool bar for edit menu
+	ui.mainToolBar->addAction(ui.actionUndo);
+	ui.mainToolBar->addAction(ui.actionRedo);
+	ui.mainToolBar->addAction(ui.actionDeleteEdge);
 }
 
 MainWindow::~MainWindow() {
@@ -73,9 +85,9 @@ void MainWindow::onLoadRoads() {
 	if (filename.isEmpty()) return;
 
 	urbanGeometry->clear();
-	urbanGeometry->loadRoads(filename);
+	glWidget->editor.load(filename);
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onSaveRoads() {
@@ -84,7 +96,7 @@ void MainWindow::onSaveRoads() {
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	urbanGeometry->saveRoads(filename);
+	glWidget->editor.save(filename);
 
 	QApplication::restoreOverrideCursor();
 }
@@ -92,7 +104,7 @@ void MainWindow::onSaveRoads() {
 void MainWindow::onClear() {
 	urbanGeometry->clear();
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onSaveImage() {
@@ -107,10 +119,10 @@ void MainWindow::onSaveImageHD() {
 	int cH = glWidget->height();
 	int cW = glWidget->width();
 	glWidget->resize(cW * 3, cH * 3);
-	glWidget->updateGL();
+	glWidget->update();
 	glWidget->grabFrameBuffer().save(fileName);
 	glWidget->resize(cW,cH);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onLoadCamera() {
@@ -119,7 +131,7 @@ void MainWindow::onLoadCamera() {
 
 	glWidget->camera.loadCameraPose(filename.toUtf8().constData());
 	glWidget->updateCamera();
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onSaveCamera() {
@@ -132,42 +144,57 @@ void MainWindow::onSaveCamera() {
 void MainWindow::onResetCamera() {
 	glWidget->camera.resetCamera();
 	glWidget->updateCamera();
-	glWidget->updateGL();
+	glWidget->update();
+}
+
+void MainWindow::onUndo() {
+	glWidget->editor.undo();
+	glWidget->update();
+}
+
+void MainWindow::onRedo() {
+	glWidget->editor.redo();
+	glWidget->update();
+}
+
+void MainWindow::onDeleteEdge() {
+	glWidget->editor.deleteEdge();
+	glWidget->update();
 }
 
 void MainWindow::onGenerateBlocks() {
 	setParameters();
 	urbanGeometry->generateBlocks();
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onGenerateParcels() {
 	setParameters();
 	urbanGeometry->generateParcels();
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onGenerateBuildings() {
 	setParameters();
 	urbanGeometry->generateBuildings();
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onGenerateVegetation() {
 	setParameters();
 	urbanGeometry->generateVegetation();
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onGenerateAll() {
 	setParameters();
 	urbanGeometry->generateAll(true);
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onGenerateCity() {
@@ -180,7 +207,7 @@ void MainWindow::onGenerateCity() {
 
 	urbanGeometry->generateAll(true);
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 
 	std::cout << " Done." << std::endl;
 }
@@ -190,24 +217,36 @@ void MainWindow::onViewChanged() {
 
 	int terrainMode;
 	if (ui.actionView2D->isChecked()) {
-		terrainMode = 0;
-
-		// change to top view
-		glWidget->camera.resetCamera();
+		terrainMode = 0;		
 	}
 	else  {
 		terrainMode = 1;
+
+		// set the roads to urban geometry
+		urbanGeometry->clear();
+		urbanGeometry->roads = glWidget->editor.roads.clone();
+		urbanGeometry->roads.planarify();
+		urbanGeometry->roads.reduce();
+		urbanGeometry->roads = urbanGeometry->roads.clone();
+
+		// generate blocks, parcels, and buildings
+		urbanGeometry->generateBlocks();
+		urbanGeometry->generateParcels();
+		urbanGeometry->generateBuildings();
+
+		// update shadow map
+		glWidget->shadow.makeShadowMap(glWidget);
 	}
 
 	glWidget->vboRenderManager.changeTerrainShader(terrainMode);
 	urbanGeometry->update(glWidget->vboRenderManager);
 	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onShowWater() {
 	G::global()["show_water"] = ui.actionShowWater->isChecked();
-	glWidget->updateGL();
+	glWidget->update();
 }
 
 void MainWindow::onSeaLevel() {
@@ -217,7 +256,7 @@ void MainWindow::onSeaLevel() {
 	QString text = dlg.getText(NULL, "Sea Level", "Enter sea level", QLineEdit::Normal,	QString::number(G::getFloat("sea_level")), &ok);	
 	if (ok && !text.isEmpty()) {
 		G::global()["sea_level"] = text.toFloat();
-		glWidget->updateGL();
+		glWidget->update();
 	}
 }
 

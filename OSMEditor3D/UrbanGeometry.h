@@ -31,7 +31,5 @@ public:
 
 	void update(VBORenderManager& vboRenderManager);
 
-	void loadRoads(const QString& filename);
-	void saveRoads(const QString& filename);
 	void clear();
 };

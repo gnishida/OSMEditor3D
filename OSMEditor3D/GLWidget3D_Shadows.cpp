@@ -186,7 +186,8 @@ void GLWidgetSimpleShadow::initShadow(int _programId,GLWidget3D* glWidget3D) {
 }//
 
 void GLWidgetSimpleShadow::makeShadowMap(GLWidget3D* glWidget3D){
-	
+	glUseProgram(glWidget3D->vboRenderManager.program);
+
 	glDisable(GL_TEXTURE_2D);
 
 	int origWidth=glWidget3D->width();

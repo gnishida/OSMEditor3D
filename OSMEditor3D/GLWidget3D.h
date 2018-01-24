@@ -9,6 +9,7 @@
 #include <QKeyEvent>
 #include "Camera.h"
 #include "RoadGraph.h"
+#include "RoadGraphEditor.h"
 
 class MainWindow;
 
@@ -20,8 +21,9 @@ public:
 	bool shiftPressed;
 	bool ctrlPressed;
 	bool altPressed;
-	QPoint lastPos;
-
+	QPoint prev_mouse_pt;
+	bool first_paint;
+	RoadGraphEditor editor;
 	VBORenderManager vboRenderManager;
 	GLWidgetSimpleShadow shadow;
 
@@ -31,16 +33,17 @@ public:
 	void keyPressEvent(QKeyEvent* e);
 	void keyReleaseEvent(QKeyEvent* e);
 	void drawScene(int drawMode);
+	void render();
 	void updateCamera();
 
 protected:
 	void initializeGL();
 
 	void resizeGL(int width, int height);
-	void paintGL();    
-
+	void paintEvent(QPaintEvent* e);
 	void mousePressEvent(QMouseEvent* e);
 	void mouseMoveEvent(QMouseEvent* e);
+	void mouseDoubleClickEvent(QMouseEvent* e);
 	void wheelEvent(QWheelEvent* e);
 	void mouseReleaseEvent(QMouseEvent* e);
 };

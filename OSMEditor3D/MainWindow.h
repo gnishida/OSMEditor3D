@@ -39,6 +39,10 @@ public slots:
 	void onSaveCamera();
 	void onResetCamera();
 
+	void onUndo();
+	void onRedo();
+	void onDeleteEdge();
+
 	void onGenerateBlocks();
 	void onGenerateParcels();
 	void onGenerateBuildings();

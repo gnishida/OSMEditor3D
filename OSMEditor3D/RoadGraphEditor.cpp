@@ -15,6 +15,16 @@ RoadGraphEditor::RoadGraphEditor() {
 	adding_new_edge = false;
 }
 
+void RoadGraphEditor::clear() {
+	roads.clear();
+
+	vertex_selected = false;
+	edge_selected = false;
+	edge_point_selected = false;
+	vertex_moved = false;
+	adding_new_edge = false;
+}
+
 void RoadGraphEditor::moveCamera(const QPointF& d) {
 	origin += d;
 }
@@ -51,9 +61,6 @@ void RoadGraphEditor::load(const QString& filename) {
 	QFile file(filename);
 	QXmlInputSource source(&file);
 	reader.parse(source);
-
-	//roads.reduce();
-	//roads.planarify();
 }
 
 void RoadGraphEditor::save(const QString& filename) {

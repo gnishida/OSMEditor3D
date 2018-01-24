@@ -170,6 +170,15 @@
     <ClCompile Include="OSMRoadsExporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PropertyWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_PropertyWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_PropertyWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MainWindow.h">
@@ -180,6 +189,12 @@
     </CustomBuild>
     <CustomBuild Include="MainWindow.qrc">
       <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PropertyWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PropertyWidget.ui">
+      <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -297,29 +312,32 @@
     <ClInclude Include="Polyline3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="nvModel\nvMath.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="nvModel\nvMatrix.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="nvModel\nvModel.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="GeneratedFiles\ui_PropertyWidget.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="nvModel\nvQuaternion.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="nvModel\nvVector.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="History.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RoadGraphEditor.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OSMRoadsExporter.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nvModel\nvMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nvModel\nvMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nvModel\nvModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="History.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RoadGraphEditor.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,19 +4,18 @@
 #include "glew.h"
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
-//#include "ControlWidget.h"
+#include "PropertyWidget.h"
 #include "GLWidget3D.h"
 #include "UrbanGeometry.h"
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
 	Q_OBJECT
 
 public:
 	Ui::MainWindow ui;
-	//ControlWidget* controlWidget;
 	GLWidget3D* glWidget;
 	UrbanGeometry* urbanGeometry;
+	PropertyWidget* propertyWidget;
 
 public:
 	MainWindow(QWidget *parent = 0);
@@ -29,21 +28,20 @@ protected:
 	void keyReleaseEvent(QKeyEvent* e);
 
 public slots:
-	void onLoadRoads();
-	void onSaveRoads();
+	void onNew();
+	void onOpen();
+	void onSave();
 	void onClear();
-
 	void onSaveImage();
 	void onSaveImageHD();
 	void onLoadCamera();
 	void onSaveCamera();
 	void onResetCamera();
-
 	void onUndo();
 	void onRedo();
 	void onDeleteEdge();
-
 	void onViewChanged();
+	void onPropertyWindow();
 };
 
 #endif // MAINWINDOW_H

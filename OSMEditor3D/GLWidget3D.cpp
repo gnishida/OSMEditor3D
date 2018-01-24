@@ -37,7 +37,7 @@ void GLWidget3D::mousePressEvent(QMouseEvent* e) {
 					// do nothing
 				}
 				else if (editor.selectEdge(pt)) {
-					//mainWin->propertyWidget->setRoadEdge(editor.roads.graph[editor.selected_edge_desc]);
+					mainWin->propertyWidget->setRoadEdge(editor.roads.graph[editor.selected_edge_desc]);
 				}
 			}
 		}

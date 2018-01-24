@@ -14,31 +14,36 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	ui.actionView3D->setChecked(false);
 
 	// register the menu's action handlers
-	connect(ui.actionLoadRoads, SIGNAL(triggered()), this, SLOT(onLoadRoads()));
-	connect(ui.actionSaveRoads, SIGNAL(triggered()), this, SLOT(onSaveRoads()));
+	connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(onNew()));
+	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(onOpen()));
+	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(onSave()));
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(onClear()));
-
 	connect(ui.actionSaveImage, SIGNAL(triggered()), this, SLOT(onSaveImage()));
 	connect(ui.actionSaveImageHD, SIGNAL(triggered()), this, SLOT(onSaveImageHD()));
 	connect(ui.actionLoadCamera, SIGNAL(triggered()), this, SLOT(onLoadCamera()));
 	connect(ui.actionSaveCamera, SIGNAL(triggered()), this, SLOT(onSaveCamera()));
 	connect(ui.actionResetCamera, SIGNAL(triggered()), this, SLOT(onResetCamera()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
-
 	connect(ui.actionUndo, SIGNAL(triggered()), this, SLOT(onUndo()));
 	connect(ui.actionRedo, SIGNAL(triggered()), this, SLOT(onRedo()));
 	connect(ui.actionDeleteEdge, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
-
 	connect(ui.actionView2D, SIGNAL(triggered()), this, SLOT(onViewChanged()));
 	connect(ui.actionView3D, SIGNAL(triggered()), this, SLOT(onViewChanged()));
+	connect(ui.actionPropertyWindow, SIGNAL(triggered()), this, SLOT(onPropertyWindow()));
 
 	// setup the GL widget
 	glWidget = new GLWidget3D(this);
 	setCentralWidget(glWidget);
 
+	// setup the docking widgets
+	propertyWidget = new PropertyWidget(this);
+	propertyWidget->show();
+	addDockWidget(Qt::RightDockWidgetArea, propertyWidget);
+
 	// create tool bar for file menu
-	ui.mainToolBar->addAction(ui.actionLoadRoads);
-	ui.mainToolBar->addAction(ui.actionSaveRoads);
+	ui.mainToolBar->addAction(ui.actionNew);
+	ui.mainToolBar->addAction(ui.actionOpen);
+	ui.mainToolBar->addAction(ui.actionSave);
 	ui.mainToolBar->addSeparator();
 
 	// create tool bar for edit menu
@@ -72,17 +77,29 @@ void MainWindow::keyReleaseEvent(QKeyEvent* e) {
 	glWidget->keyReleaseEvent(e);
 }
 
-void MainWindow::onLoadRoads() {
+void MainWindow::onNew() {
+	urbanGeometry->clear();
+	glWidget->shadow.makeShadowMap(glWidget);
+	glWidget->editor.clear();
+	glWidget->update();
+
+	this->setWindowTitle("OSM Editor 3D");
+}
+
+void MainWindow::onOpen() {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Load roads..."), "", tr("OSM files (*.osm)"));
 	if (filename.isEmpty()) return;
 
 	urbanGeometry->clear();
-	glWidget->editor.load(filename);
 	glWidget->shadow.makeShadowMap(glWidget);
+	glWidget->editor.load(filename);
+	glWidget->editor.origin = QPointF(glWidget->width() * 0.5, glWidget->height() * 0.5);
 	glWidget->update();
+
+	this->setWindowTitle("OSM Editor 3D - " + filename);
 }
 
-void MainWindow::onSaveRoads() {
+void MainWindow::onSave() {
 	QString filename = QFileDialog::getSaveFileName(this, tr("Save roads..."), "", tr("Shapefiles Files (*.osm)"));
 	if (filename.isEmpty()) return;
 
@@ -91,6 +108,8 @@ void MainWindow::onSaveRoads() {
 	glWidget->editor.save(filename);
 
 	QApplication::restoreOverrideCursor();
+
+	this->setWindowTitle("OSM Editor 3D - " + filename);
 }
 
 void MainWindow::onClear() {
@@ -184,3 +203,7 @@ void MainWindow::onViewChanged() {
 	glWidget->update();
 }
 
+void MainWindow::onPropertyWindow() {
+	propertyWidget->show();
+	addDockWidget(Qt::RightDockWidgetArea, propertyWidget);
+}

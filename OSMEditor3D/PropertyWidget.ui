@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui version="4.0">
+  <class>PropertyWidget</class>
+  <widget class="QDockWidget" name="PropertyWidget">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>213</width>
+        <height>196</height>
+      </rect>
+    </property>
+    <property name="minimumSize">
+      <size>
+        <width>213</width>
+        <height>196</height>
+      </size>
+    </property>
+    <widget class="QWidget" name="dockWidgetContents">
+      <property name="windowTitle">
+        <string>PropertyWidget</string>
+      </property>
+      <widget class="QGroupBox" name="groupBox">
+        <property name="geometry">
+          <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>191</width>
+            <height>151</height>
+          </rect>
+        </property>
+        <property name="title">
+          <string>Edge</string>
+        </property>
+        <widget class="QLabel" name="label">
+          <property name="geometry">
+            <rect>
+              <x>10</x>
+              <y>20</y>
+              <width>47</width>
+              <height>21</height>
+            </rect>
+          </property>
+          <property name="text">
+            <string>Type:</string>
+          </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+          <property name="geometry">
+            <rect>
+              <x>10</x>
+              <y>50</y>
+              <width>47</width>
+              <height>21</height>
+            </rect>
+          </property>
+          <property name="text">
+            <string>#lanes:</string>
+          </property>
+        </widget>
+        <widget class="QComboBox" name="comboBoxEdgeType">
+          <property name="geometry">
+            <rect>
+              <x>60</x>
+              <y>20</y>
+              <width>121</width>
+              <height>22</height>
+            </rect>
+          </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBoxNumLanes">
+          <property name="geometry">
+            <rect>
+              <x>60</x>
+              <y>50</y>
+              <width>71</width>
+              <height>22</height>
+            </rect>
+          </property>
+        </widget>
+        <widget class="QCheckBox" name="checkBoxOneWay">
+          <property name="geometry">
+            <rect>
+              <x>10</x>
+              <y>80</y>
+              <width>70</width>
+              <height>17</height>
+            </rect>
+          </property>
+          <property name="text">
+            <string>One way</string>
+          </property>
+        </widget>
+        <widget class="QPushButton" name="pushButtonApply">
+          <property name="geometry">
+            <rect>
+              <x>40</x>
+              <y>110</y>
+              <width>121</width>
+              <height>31</height>
+            </rect>
+          </property>
+          <property name="text">
+            <string>Apply</string>
+          </property>
+        </widget>
+      </widget>
+    </widget>
+  </widget>
+  <layoutdefault spacing="6" margin="11"/>
+  <resources/>
+  <connections/>
+</ui>

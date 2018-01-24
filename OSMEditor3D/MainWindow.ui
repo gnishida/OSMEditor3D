@@ -33,8 +33,9 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionLoadRoads"/>
-    <addaction name="actionSaveRoads"/>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
     <addaction name="separator"/>
     <addaction name="actionClear"/>
     <addaction name="separator"/>
@@ -53,6 +54,8 @@
     </property>
     <addaction name="actionView2D"/>
     <addaction name="actionView3D"/>
+    <addaction name="separator"/>
+    <addaction name="actionPropertyWindow"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -110,13 +113,13 @@
     <string/>
    </property>
   </action>
-  <action name="actionSaveRoads">
+  <action name="actionSave">
    <property name="icon">
     <iconset>
      <normaloff>Resources/save.png</normaloff>Resources/save.png</iconset>
    </property>
    <property name="text">
-    <string>Save Roads</string>
+    <string>Save</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -127,13 +130,13 @@
     <string>Property Widget</string>
    </property>
   </action>
-  <action name="actionLoadRoads">
+  <action name="actionOpen">
    <property name="icon">
     <iconset>
      <normaloff>Resources/open.png</normaloff>Resources/open.png</iconset>
    </property>
    <property name="text">
-    <string>Load Roads</string>
+    <string>Open</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -315,6 +318,23 @@
    </property>
    <property name="shortcut">
     <string>Del</string>
+   </property>
+  </action>
+  <action name="actionPropertyWindow">
+   <property name="text">
+    <string>Property Window</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/new.png</normaloff>Resources/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>

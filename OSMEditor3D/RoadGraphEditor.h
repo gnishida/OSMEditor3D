@@ -26,6 +26,7 @@ public:
 public:
 	RoadGraphEditor();
 
+	void clear();
 	void moveCamera(const QPointF& d);
 	void zoom(double d, int screen_width, int screen_height);
 	void resize(const QSize& old_size, const QSize& new_size);

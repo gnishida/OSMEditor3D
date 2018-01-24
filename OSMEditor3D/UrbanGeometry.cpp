@@ -23,31 +23,22 @@ UrbanGeometry::UrbanGeometry(MainWindow* mainWin) {
 
 void UrbanGeometry::generateBlocks() {
 	PmBlocks::generateBlocks(&mainWin->glWidget->vboRenderManager, roads, blocks);
-	update(mainWin->glWidget->vboRenderManager);
 }
 
 void UrbanGeometry::generateParcels() {
 	PmParcels::generateParcels(mainWin->glWidget->vboRenderManager, blocks.blocks);
-	update(mainWin->glWidget->vboRenderManager);
 }
 
 void UrbanGeometry::generateBuildings() {
 	PmBuildings::generateBuildings(mainWin->glWidget->vboRenderManager, blocks.blocks);
-	update(mainWin->glWidget->vboRenderManager);
 }
 
 void UrbanGeometry::generateVegetation() {
 	PmVegetation::generateVegetation(mainWin->glWidget->vboRenderManager, blocks.blocks);
-	update(mainWin->glWidget->vboRenderManager);
 }
 
 void UrbanGeometry::generateAll(bool updateGeometry) {
-	clear();
-
 	srand(0);
-
-	// warm up the random numbers
-	for (int i = 0; i < 100; ++i) rand();
 
 	PmBlocks::generateBlocks(&mainWin->glWidget->vboRenderManager, roads, blocks);
 	PmParcels::generateParcels(mainWin->glWidget->vboRenderManager, blocks.blocks);

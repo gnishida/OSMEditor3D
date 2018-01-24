@@ -43,17 +43,7 @@ public slots:
 	void onRedo();
 	void onDeleteEdge();
 
-	void onGenerateBlocks();
-	void onGenerateParcels();
-	void onGenerateBuildings();
-	void onGenerateVegetation();
-	void onGenerateAll();
-
-	void onGenerateCity();
-
 	void onViewChanged();
-	void onShowWater();
-	void onSeaLevel();
 };
 
 #endif // MAINWINDOW_H

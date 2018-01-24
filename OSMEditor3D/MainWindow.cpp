@@ -29,16 +29,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	connect(ui.actionRedo, SIGNAL(triggered()), this, SLOT(onRedo()));
 	connect(ui.actionDeleteEdge, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
 
-	connect(ui.actionGenerateBlocks, SIGNAL(triggered()), this, SLOT(onGenerateBlocks()));
-	connect(ui.actionGenerateParcels, SIGNAL(triggered()), this, SLOT(onGenerateParcels()));
-	connect(ui.actionGenerateBuildings, SIGNAL(triggered()), this, SLOT(onGenerateBuildings()));
-	connect(ui.actionGenerateVegetation, SIGNAL(triggered()), this, SLOT(onGenerateVegetation()));
-	connect(ui.actionGenerateAll, SIGNAL(triggered()), this, SLOT(onGenerateAll()));
-
 	connect(ui.actionView2D, SIGNAL(triggered()), this, SLOT(onViewChanged()));
 	connect(ui.actionView3D, SIGNAL(triggered()), this, SLOT(onViewChanged()));
-	connect(ui.actionShowWater, SIGNAL(triggered()), this, SLOT(onShowWater()));
-	connect(ui.actionSeaLevel, SIGNAL(triggered()), this, SLOT(onSeaLevel()));
 
 	// setup the GL widget
 	glWidget = new GLWidget3D(this);
@@ -162,56 +154,6 @@ void MainWindow::onDeleteEdge() {
 	glWidget->update();
 }
 
-void MainWindow::onGenerateBlocks() {
-	setParameters();
-	urbanGeometry->generateBlocks();
-	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->update();
-}
-
-void MainWindow::onGenerateParcels() {
-	setParameters();
-	urbanGeometry->generateParcels();
-	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->update();
-}
-
-void MainWindow::onGenerateBuildings() {
-	setParameters();
-	urbanGeometry->generateBuildings();
-	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->update();
-}
-
-void MainWindow::onGenerateVegetation() {
-	setParameters();
-	urbanGeometry->generateVegetation();
-	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->update();
-}
-
-void MainWindow::onGenerateAll() {
-	setParameters();
-	urbanGeometry->generateAll(true);
-	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->update();
-}
-
-void MainWindow::onGenerateCity() {
-	std::cout << "Generating a city...";
-
-	urbanGeometry->clear();
-
-	// set the parameter values
-	setParameters();
-
-	urbanGeometry->generateAll(true);
-	glWidget->shadow.makeShadowMap(glWidget);
-	glWidget->update();
-
-	std::cout << " Done." << std::endl;
-}
-
 void MainWindow::onViewChanged() {
 	G::global()["shader2D"] = ui.actionView2D->isChecked();
 
@@ -230,9 +172,7 @@ void MainWindow::onViewChanged() {
 		urbanGeometry->roads = urbanGeometry->roads.clone();
 
 		// generate blocks, parcels, and buildings
-		urbanGeometry->generateBlocks();
-		urbanGeometry->generateParcels();
-		urbanGeometry->generateBuildings();
+		urbanGeometry->generateAll(true);
 
 		// update shadow map
 		glWidget->shadow.makeShadowMap(glWidget);
@@ -242,21 +182,5 @@ void MainWindow::onViewChanged() {
 	urbanGeometry->update(glWidget->vboRenderManager);
 	glWidget->shadow.makeShadowMap(glWidget);
 	glWidget->update();
-}
-
-void MainWindow::onShowWater() {
-	G::global()["show_water"] = ui.actionShowWater->isChecked();
-	glWidget->update();
-}
-
-void MainWindow::onSeaLevel() {
-	bool ok;
-	QInputDialog dlg;
-	dlg.setOptions(QInputDialog::NoButtons);		
-	QString text = dlg.getText(NULL, "Sea Level", "Enter sea level", QLineEdit::Normal,	QString::number(G::getFloat("sea_level")), &ok);	
-	if (ok && !text.isEmpty()) {
-		G::global()["sea_level"] = text.toFloat();
-		glWidget->update();
-	}
 }
 

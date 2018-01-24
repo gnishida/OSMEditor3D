@@ -1,0 +1,51 @@
+<osm generator="OSM Editor" version="0.6">
+    <bounds minlat="35.63711741919052" minlon="139.9281654111386" maxlat="35.63911759975505" maxlon="139.9308370167699"/>
+    <node id="0" lon="139.9291327954416" lat="35.63911759975505"/>
+    <node id="2" lon="139.9308370167699" lat="35.63827140877417"/>
+    <node id="3" lon="139.9306499609239" lat="35.63769786903708"/>
+    <node id="13" lon="139.9301143010931" lat="35.63711741919052"/>
+    <node id="15" lon="139.9281654111386" lat="35.63831979995562"/>
+    <node id="16" lon="139.9286178545776" lat="35.63878966760123"/>
+    <way id="0">
+        <nd ref="2"/>
+        <nd ref="3"/>
+        <tag v="secondary" k="highway"/>
+        <tag v="1" k="lanes"/>
+        <tag v="no" k="oneway"/>
+    </way>
+    <way id="1">
+        <nd ref="15"/>
+        <nd ref="16"/>
+        <tag v="secondary" k="highway"/>
+        <tag v="2" k="lanes"/>
+        <tag v="yes" k="oneway"/>
+    </way>
+    <way id="2">
+        <nd ref="0"/>
+        <nd ref="16"/>
+        <tag v="secondary" k="highway"/>
+        <tag v="2" k="lanes"/>
+        <tag v="yes" k="oneway"/>
+    </way>
+    <way id="3">
+        <nd ref="3"/>
+        <nd ref="13"/>
+        <tag v="secondary" k="highway"/>
+        <tag v="1" k="lanes"/>
+        <tag v="no" k="oneway"/>
+    </way>
+    <way id="4">
+        <nd ref="13"/>
+        <nd ref="15"/>
+        <tag v="secondary" k="highway"/>
+        <tag v="1" k="lanes"/>
+        <tag v="no" k="oneway"/>
+    </way>
+    <way id="5">
+        <nd ref="2"/>
+        <nd ref="0"/>
+        <tag v="secondary" k="highway"/>
+        <tag v="1" k="lanes"/>
+        <tag v="yes" k="oneway"/>
+    </way>
+</osm>

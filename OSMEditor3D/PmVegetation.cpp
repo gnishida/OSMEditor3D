@@ -68,7 +68,7 @@ bool PmVegetation::generateVegetation(VBORenderManager& rendManager, const std::
 	rendManager.removeAllStreetElementName("streetLamp");
 	rendManager.removeAllStreetElementName("tree");
 
-	float treesPerSqMeter = 0.04f;// 0.002f; //used for trees in parcels
+	float treesPerSqMeter = 0.01f;// 0.002f; //used for trees in parcels
 
 	// generate trees in blocks (park)
 	for (int bN = 0; bN < blocks.size(); bN++) {
@@ -112,6 +112,7 @@ bool PmVegetation::generateVegetation(VBORenderManager& rendManager, const std::
 					}
 				}
 				else {
+					/*
 					// for the parcel with building, put trees in the remaining area outside the footprint
 					BBox bbox = blocks[bN].parcels[pN].parcelContour.envelope();
 					int numTrees = (blocks[bN].parcels[pN].parcelContour.area() - blocks[bN].parcels[pN].building.buildingFootprint.area()) * treesPerSqMeter;
@@ -129,6 +130,7 @@ bool PmVegetation::generateVegetation(VBORenderManager& rendManager, const std::
 
 						rendManager.addStreetElementModel("tree", addTree(pos));
 					}
+					*/
 				}
 			}
 		}

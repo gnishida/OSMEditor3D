@@ -88,8 +88,7 @@ struct vertex_output_visitor : public output_visitor {
 	}
 
 	template <typename Edge> 
-	void next_edge(Edge e) 
-	{ 
+	void next_edge(Edge e)  {
 		if (!vertex_output_visitor_invalid) {
 			RoadVertexDesc src = boost::source(e, roadGraphPtr->graph);
 			RoadVertexDesc tgt = boost::target(e, roadGraphPtr->graph);
@@ -117,11 +116,11 @@ struct vertex_output_visitor : public output_visitor {
 			}
 
 			for (int i = 0; i < roadGraphPtr->graph[e]->polyline.size() - 1; ++i) {
-				if (roadGraphPtr->graph[e]->type == RoadEdge::TYPE_AVENUE) {
-					sidewalkContourWidths.push_back(0.5f * roadGraphPtr->graph[e]->getWidth(G::getFloat("major_road_width") * 0.5f));
+				if (roadGraphPtr->graph[e]->type != RoadEdge::TYPE_STREET) {
+					sidewalkContourWidths.push_back(G::getFloat("major_road_width"));
 				}
 				else {
-					sidewalkContourWidths.push_back(0.5f * roadGraphPtr->graph[e]->getWidth(G::getFloat("minor_road_width") * 0.5f));
+					sidewalkContourWidths.push_back(G::getFloat("minor_road_width"));
 				}
 			}
 		}
@@ -180,8 +179,6 @@ bool PmBlocks::removeIntersectingEdges(RoadGraph& roadGraph) {
  * Generate blocks from the road network
  */
 bool PmBlocks::generateBlocks(VBORenderManager* renderManager, RoadGraph& roadGraph, BlockSet& blocks) {
-	//GraphUtil::normalizeLoop(roadGraph);
-
 	roadGraphPtr = &roadGraph;
 	std::vector<Block> tmpBlocks;
 	blocksPtr = &tmpBlocks;
@@ -297,10 +294,14 @@ void PmBlocks::buildEmbedding(RoadGraph& roads, std::vector<std::vector<RoadEdge
 
 	RoadVertexIter vi, vend;
 	for (boost::tie(vi, vend) = boost::vertices(roads.graph); vi != vend; ++vi) {
+		if (!roads.graph[*vi]->valid) continue;
+
 		QMap<float, RoadEdgeDesc> edges;
 
 		RoadOutEdgeIter ei, eend;
 		for (boost::tie(ei, eend) = boost::out_edges(*vi, roads.graph); ei != eend; ++ei) {
+			if (!roads.graph[*ei]->valid) continue;
+
 			Polyline2D polyline = roads.orderPolyLine(*ei, *vi);
 			QVector2D vec = polyline[1] - polyline[0];
 			edges[-atan2f(vec.y(), vec.x())] = *ei;

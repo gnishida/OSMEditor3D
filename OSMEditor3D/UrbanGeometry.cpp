@@ -99,6 +99,10 @@ void UrbanGeometry::loadRoads(const QString& filename) {
 	QXmlInputSource source(&file);
 	reader.parse(source);
 
+	roads.planarify();
+	roads.reduce();
+	roads = roads.clone();
+
 	update(mainWin->glWidget->vboRenderManager);
 }
 

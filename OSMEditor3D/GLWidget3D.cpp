@@ -34,20 +34,15 @@ void GLWidget3D::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void GLWidget3D::mouseMoveEvent(QMouseEvent *event) {
-	/*QVector2D pos;
-	mouseTo2D(event->x(), event->y(), pos);*/
-
 	float dx = (float)(event->x() - lastPos.x());
 	float dy = (float)(event->y() - lastPos.y());
 	float camElevation = camera.getCamElevation();
-
-	//vboRenderManager.mousePos3D=pos.toVector3D();
 	
 	if (ctrlPressed) {	// Rotate
 		camera.changeXRotation(dy * 0.4);
 		camera.changeZRotation(dx * 0.4);
 		lastPos = event->pos();
-	} else if (event->buttons() & Qt::LeftButton) {	// Translate
+	} else if (event->buttons() & Qt::RightButton) {	// Translate
 		camera.changeLookAt(-dx, dy, 0);
 		lastPos = event->pos();
 	}
@@ -89,7 +84,7 @@ void GLWidget3D::initializeGL() {
 	glPointSize(10.0f);
 
 	///
-	vboRenderManager.init(QVector2D(8000, 8000));
+	vboRenderManager.init(QVector2D(3000, 3000));
 	shadow.initShadow(vboRenderManager.program,this);
 	glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 0);//SHADOW: Disable
 	glUniform1i(glGetUniformLocation(vboRenderManager.program, "terrainMode"), 0);//FLAT

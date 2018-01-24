@@ -1,6 +1,7 @@
 ﻿#include "BlockMeshGenerator.h"
 #include <QDir>
 #include "global.h"
+#include <boost/throw_exception.hpp>
 
 bool BlockMeshGenerator::initialized = false;
 std::vector<QString> BlockMeshGenerator::sideWalkFileNames;
@@ -65,8 +66,12 @@ void BlockMeshGenerator::generateBlockMesh(VBORenderManager& rendManager, const 
 			}
 
 			int randSidewalk = 2; //qrand()%grassFileNames.size();
-			//rendManager.addStaticGeometry2("3d_blocks", polygon, 0.0f,  sideWalkFileNames[randSidewalk], 2 | mode_AdaptTerrain, sideWalkScale[randSidewalk], QColor());
-			rendManager.addStaticGeometry2WithHole("3d_blocks", polygon, holes, 0.0f, sideWalkFileNames[randSidewalk], 2 | mode_AdaptTerrain, sideWalkScale[randSidewalk], QColor());
+			try {
+				//rendManager.addStaticGeometry2("3d_blocks", polygon, 0.0f,  sideWalkFileNames[randSidewalk], 2 | mode_AdaptTerrain, sideWalkScale[randSidewalk], QColor());
+				rendManager.addStaticGeometry2WithHole("3d_blocks", polygon, holes, 0.0f, sideWalkFileNames[randSidewalk], 2 | mode_AdaptTerrain, sideWalkScale[randSidewalk], QColor());
+			}
+			catch (boost::exception const& ex) {
+			}
 
 			// side of the side walks
 			std::vector<Vertex> vert;

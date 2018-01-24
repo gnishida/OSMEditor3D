@@ -27,15 +27,17 @@ void RoadMeshGenerator::generateRoadMesh(VBORenderManager& rendManager, RoadGrap
 
 			RoadEdgePtr edge = roads.graph[*ei];
 			float hWidth;
-			if (roads.graph[*ei]->type == RoadEdge::TYPE_AVENUE) {
-				hWidth = roads.graph[*ei]->lanes * G::getFloat("major_road_width");
+			if (roads.graph[*ei]->type != RoadEdge::TYPE_STREET) {
+				hWidth = G::getFloat("major_road_width");
 			}
 			else {
-				hWidth = roads.graph[*ei]->lanes * G::getFloat("minor_road_width");
+				hWidth = G::getFloat("minor_road_width");
 			}
 			
 			int type;
 			switch (roads.graph[*ei]->type) {
+			case RoadEdge::TYPE_HIGHWAY:
+			case RoadEdge::TYPE_BOULEVARD:
 			case RoadEdge::TYPE_AVENUE:
 				type = 1;
 				break;
@@ -177,11 +179,11 @@ void RoadMeshGenerator::generateRoadMesh(VBORenderManager& rendManager, RoadGrap
 				for (boost::tie(oei, oeend) = boost::out_edges(*vi, roads.graph); oei != oeend; ++oei) {
 					if (!roads.graph[*oei]->valid) continue;
 
-					if (roads.graph[*oei]->type == RoadEdge::TYPE_AVENUE) {
-						rad = roads.graph[*oei]->lanes * G::getFloat("major_road_width");
+					if (roads.graph[*oei]->type != RoadEdge::TYPE_STREET) {
+						rad = G::getFloat("major_road_width");
 					}
 					else {
-						rad = roads.graph[*oei]->lanes * G::getFloat("minor_road_width");
+						rad = G::getFloat("minor_road_width");
 					}
 					Polyline2D polyline = roads.orderPolyLine(*oei, *vi);
 					QVector2D dir = polyline[1] - polyline[0];
@@ -275,32 +277,32 @@ void RoadMeshGenerator::generateRoadMesh(VBORenderManager& rendManager, RoadGrap
 					//printf("** eN %d\n",eN);
 					// a) ED1: this edge
 					float ed1W;
-					if (roads.graph[edgeAngleOut[eN].second]->type == RoadEdge::TYPE_AVENUE) {
-						ed1W = roads.graph[edgeAngleOut[eN].second]->getWidth(G::getFloat("major_road_width") * 0.5f);
+					if (roads.graph[edgeAngleOut[eN].second]->type != RoadEdge::TYPE_STREET) {
+						ed1W = G::getFloat("major_road_width");
 					}
 					else {
-						ed1W = roads.graph[edgeAngleOut[eN].second]->getWidth(G::getFloat("minor_road_width") * 0.5f);
+						ed1W = G::getFloat("minor_road_width");
 					}
 					Polyline2D ed1poly = roads.orderPolyLine(edgeAngleOut[eN].second, *vi);// , edgeAngleOut[eN].first);
 					QVector2D ed1p1 = ed1poly[1];
 					// compute right side
 					QVector2D ed1Dir = (roads.graph[*vi]->pt - ed1p1).normalized();//ends in 0
 					QVector2D ed1Per(ed1Dir.y(), -ed1Dir.x());
-					QVector2D ed1p0R = roads.graph[*vi]->pt + ed1Per*ed1W/2.0f;
-					QVector2D ed1p1R = ed1p1 + ed1Per*ed1W/2.0f;
+					QVector2D ed1p0R = roads.graph[*vi]->pt + ed1Per * ed1W;
+					QVector2D ed1p1R = ed1p1 + ed1Per * ed1W;
 					// compute left side
-					QVector2D ed1p0L = roads.graph[*vi]->pt - ed1Per*ed1W/2.0f;
-					QVector2D ed1p1L = ed1p1 - ed1Per*ed1W/2.0f;
+					QVector2D ed1p0L = roads.graph[*vi]->pt - ed1Per * ed1W;
+					QVector2D ed1p1L = ed1p1 - ed1Per * ed1W;
 
 					// b) ED2: next edge
 					int lastEdge = eN - 1;
 					if (lastEdge < 0) lastEdge = edgeAngleOut.size() - 1;
 					float ed2WL;
-					if (roads.graph[edgeAngleOut[lastEdge].second]->type == RoadEdge::TYPE_AVENUE) {
-						ed2WL = roads.graph[edgeAngleOut[lastEdge].second]->getWidth(G::getFloat("major_road_width") * 0.5f);
+					if (roads.graph[edgeAngleOut[lastEdge].second]->type != RoadEdge::TYPE_STREET) {
+						ed2WL = G::getFloat("major_road_width");
 					}
 					else {
-						ed2WL = roads.graph[edgeAngleOut[lastEdge].second]->getWidth(G::getFloat("minor_road_width") * 0.5f);
+						ed2WL = G::getFloat("minor_road_width");
 					}
 					QVector2D ed2p0L = roads.graph[*vi]->pt;
 					Polyline2D ed2polyL = roads.orderPolyLine(edgeAngleOut[lastEdge].second, *vi);// , edgeAngleOut[lastEdge].first);
@@ -308,17 +310,17 @@ void RoadMeshGenerator::generateRoadMesh(VBORenderManager& rendManager, RoadGrap
 					// compute left side
 					QVector2D ed2DirL = (ed2p0L - ed2p1L).normalized();//ends in 0
 					QVector2D ed2PerL(ed2DirL.y(), -ed2DirL.x());
-					ed2p0L -= ed2PerL*ed2WL/2.0f;
-					ed2p1L -= ed2PerL*ed2WL/2.0f;
+					ed2p0L -= ed2PerL * ed2WL;
+					ed2p1L -= ed2PerL * ed2WL;
 
 					// c) ED2: last edge
 					int nextEdge = (eN + 1) % edgeAngleOut.size();
 					float ed2WR;
-					if (roads.graph[edgeAngleOut[nextEdge].second]->type == RoadEdge::TYPE_AVENUE) {
-						ed2WR = roads.graph[edgeAngleOut[nextEdge].second]->getWidth(G::getFloat("major_road_width") * 0.5f);
+					if (roads.graph[edgeAngleOut[nextEdge].second]->type != RoadEdge::TYPE_STREET) {
+						ed2WR = G::getFloat("major_road_width");
 					}
 					else {
-						ed2WR = roads.graph[edgeAngleOut[nextEdge].second]->getWidth(G::getFloat("minor_road_width") * 0.5f);
+						ed2WR = G::getFloat("minor_road_width");
 					}
 					QVector2D ed2p0R = roads.graph[*vi]->pt;
 					Polyline2D ed2polyR = roads.orderPolyLine(edgeAngleOut[nextEdge].second, *vi);// , edgeAngleOut[nextEdge].first);
@@ -326,8 +328,8 @@ void RoadMeshGenerator::generateRoadMesh(VBORenderManager& rendManager, RoadGrap
 					// compute left side
 					QVector2D ed2DirR = (ed2p0R - ed2p1R).normalized();//ends in 0
 					QVector2D ed2PerR(ed2DirR.y(), -ed2DirR.x());
-					ed2p0R += ed2PerR*ed2WR/2.0f;
-					ed2p1R += ed2PerR*ed2WR/2.0f;
+					ed2p0R += ed2PerR * ed2WR;
+					ed2p1R += ed2PerR * ed2WR;
 
 					//////////////////////////////////////////
 					// d) Computer interior coordinates
@@ -364,7 +366,7 @@ void RoadMeshGenerator::generateRoadMesh(VBORenderManager& rendManager, RoadGrap
 					stopPoints.push_back(intPoint1);
 					stopPoints.push_back(intPoint2);
 
-					if (outDegree >= 3 && roads.graph[edgeAngleOut[eN].second]->type == RoadEdge::TYPE_AVENUE && (ed1poly[0] - ed1poly.back()).length() > 10.0f && ed1poly.length() > 50.0f) {
+					if (outDegree >= 3 && roads.graph[edgeAngleOut[eN].second]->type != RoadEdge::TYPE_STREET && (ed1poly[0] - ed1poly.back()).length() > 10.0f && ed1poly.length() > 50.0f) {
 						// crosswalk
 						interPedX.push_back(Vertex(intPoint1, QVector3D(0 - 0.07f, 0, 0)));
 						interPedX.push_back(Vertex(intPoint2, QVector3D(ed1W / 7.5f + 0.07f, 0, 0)));
@@ -445,11 +447,11 @@ void RoadMeshGenerator::generate2DRoadMesh(VBORenderManager& renderManager, Road
 			if (num <= 1) continue;
 
 			float halfWidth;
-			if (roads.graph[*ei]->type == RoadEdge::TYPE_AVENUE) {
-				halfWidth = roads.graph[*ei]->lanes * G::getFloat("major_road_width");
+			if (roads.graph[*ei]->type != RoadEdge::TYPE_STREET) {
+				halfWidth = G::getFloat("major_road_width");
 			}
 			else {
-				halfWidth = roads.graph[*ei]->lanes * G::getFloat("minor_road_width");
+				halfWidth = G::getFloat("minor_road_width");
 			}
 			
 			std::vector<Vertex> vert(4 * (num - 1));
@@ -462,6 +464,8 @@ void RoadMeshGenerator::generate2DRoadMesh(VBORenderManager& renderManager, Road
 			float heightOffsetBg = 0.0f;
 
 			switch (roads.graph[*ei]->type) {
+			case RoadEdge::TYPE_HIGHWAY:
+			case RoadEdge::TYPE_BOULEVARD:
 			case RoadEdge::TYPE_AVENUE:
 				heightOffset = 0.6f;
 				heightOffsetBg = 0.1f;
@@ -555,14 +559,16 @@ void RoadMeshGenerator::generate2DRoadMesh(VBORenderManager& renderManager, Road
 				if (!roads.graph[*oei]->valid) continue;
 				
 				maxType = roads.graph[*oei]->type;
-				if (roads.graph[*oei]->type == RoadEdge::TYPE_AVENUE) {
-					halfWidth = roads.graph[*oei]->lanes * G::getFloat("major_road_width");
+				if (roads.graph[*oei]->type != RoadEdge::TYPE_STREET) {
+					halfWidth = G::getFloat("major_road_width");
 				}
 				else {
-					halfWidth = roads.graph[*oei]->lanes * G::getFloat("minor_road_width");
+					halfWidth = G::getFloat("minor_road_width");
 				}
 
 				switch (roads.graph[*oei]->type) {
+				case RoadEdge::TYPE_HIGHWAY:
+				case RoadEdge::TYPE_BOULEVARD:
 				case RoadEdge::TYPE_AVENUE:
 					heightOffset = 0.5f;
 					heightOffsetBg = 0.2f;

@@ -10,5 +10,5 @@ How to use this?
 - In the property window, the attributes of the selected edge can be updated.
 - View -> 3D to make the 3D model of the city using the procedural modeling based on the current roads.
 
-![Screen shot 1](/images/screenshot_1.png | width=250)
-![Screen shot 2](/images/screenshot_2.png | width=250)
+![Screen shot 1](/images/screenshot_1.png)
+![Screen shot 2](/images/screenshot_2.png)

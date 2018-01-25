@@ -222,7 +222,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Simple Cities", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "OSM Editor 3D", 0));
         actionNewTerrain->setText(QApplication::translate("MainWindow", "New Terrain", 0));
         actionNewTerrain->setShortcut(QString());
         actionOpenTerrain->setText(QApplication::translate("MainWindow", "Open Terrain", 0));
